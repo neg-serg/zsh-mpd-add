@@ -129,7 +129,7 @@ get_data() {
             mpc list artist | LC_ALL=C sort -f | uniq | tee "$cache_file"
             ;;
         directory|new)
-            # Natural sorting for directories
+            # Case-insensitive alphabetical sorting for directories
             local base_dir=""
             [[ $mode == "new" ]] && base_dir="$NEW_DIR/"
 
