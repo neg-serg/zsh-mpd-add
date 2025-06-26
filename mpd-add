@@ -122,7 +122,7 @@ get_data() {
         fi
     fi
 
-    # Generate fresh data
+    # Case-insensitive sorting with special-character handling.
     case $mode in
         artist)
             # Case-insensitive sorting with special characters handling
