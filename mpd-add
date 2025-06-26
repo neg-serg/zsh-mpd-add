@@ -33,10 +33,12 @@ done
 mkdir -p "$CACHE_DIR" # Create cache directory if needed
 get_mpd_conf_path() {
     if command -v systemctl >/dev/null && systemctl --user is-active mpd.service &>/dev/null; then
-        local exec_start=$(systemctl --user show mpd.service --property=ExecStart --value --no-pager)
+        local exec_start
+        exec_start=$(systemctl --user show mpd.service --property=ExecStart --value --no-pager)
         local args=(${(s: :)exec_start})
         local conf_path=""
-        local skip_next=false
+        local in_argv=0
+        local argv_str=""
         for line in "${args[@]}"; do
             if [[ "$line" == "argv[]="* ]]; then
                 in_argv=1
@@ -48,7 +50,7 @@ get_mpd_conf_path() {
                     [[ -n "$line" ]] && argv_str+=" $line"
                     for arg in ${=argv_str}; do
                         if [[ "$arg" == *mpd.conf ]]; then
-                            print -r -- "$arg"
+                            conf_path="$arg"
                         fi
                     done
                     argv_str=""
